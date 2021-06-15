@@ -121,18 +121,21 @@ public class RedisKeyExpirationListener
             while (this.retry < this.times) {
                 try
                 {
-                    System.out.println(new Date() + " ��������������...");
+                    System.out.println(new Date() + "开始获取图元token...");
                     System.out.println("token=>" + this.token);
                     System.out.println(newJSON.toJSONString());
 
                     JSONObject pushResult = this.tyService.pushTY("bearer " + this.token, newJSON);
-                    System.out.println(new Date() + " ������������... " + pushResult.toJSONString());
+                    System.out.println(new Date() + "图元推送结果：" + pushResult.toJSONString());
                     System.out.println("Rsp:" + saveKey.split(":")[1] + ":" + saveKey.split(":")[2]);
                     this.stringRedisTemplate.opsForValue().set("Rsp:" + saveKey.split(":")[1] + ":" + saveKey.split(":")[2], pushResult.get("data").toString(), 7L, TimeUnit.DAYS);
 
                     this.retry = 99;
                     System.out.println("开始推送数据...");
                     String signature = AES.encryptHex(preId+"&"+topic ,pdk);
+                    System.out.println("topic=>"+topic);
+                    System.out.println("preId=>"+preId);
+                    System.out.println("signature=>"+signature);
                     String body = AES.encryptHex(newJSON.toJSONString(),pdk);
                     JSONObject tsResult = this.tsService.pushTS(preId,topic,signature, body);
                     System.out.println(new Date() + "推送数据结果..." + tsResult.toJSONString());

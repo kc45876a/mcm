@@ -65,8 +65,8 @@ public class AES {
         return hexStrResult.toLowerCase();
     }
     public static void main(String[] args) {
-        String pdk = "XX";
-        final String pwd = encryptHex("加密内容",pdk);
+        String pdk = "default";
+        final String pwd = encryptHex("aa0c6f7495ec456cb333b7f5366c4aca&df8851969d21470cbbfb39bbdd8db52d",pdk);
         System.out.println(pwd);
     }
 }
